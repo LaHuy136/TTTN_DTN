@@ -123,9 +123,9 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildValueText(state.name),
-          _buildValueText(state.gender),
+          _buildValueText('Nam'),
           _buildValueText(state.dateOfBirth),
-          _buildValueText(state.faculty),
+          _buildValueText('CNTT21'),
           _buildValueText(state.studentId),
           _buildValueText('Sinh viên'),
         ],

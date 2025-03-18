@@ -61,18 +61,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       print('Password: ${state.password}');
       print('RetypePassword: ${state.retypePassword}');
       print('ClassId: ${state.classId}');
-      print('isSuccess: ${state.isSuccess}');
 
       if (state.password != state.retypePassword) {
         emit(state.copyWith(
           isLoading: false,
           errorMessage: 'Mật khẩu xác nhận không khớp!',
-          isSuccess: false,
         ));
         return;
       }
 
-      emit(state.copyWith(isLoading: true, errorMessage: '', isSuccess: false));
+      emit(state.copyWith(isLoading: true, errorMessage: ''));
 
       try {
         final request = RegisterRequest(
@@ -91,16 +89,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
         await _authService.register(request);
         
-        print('Registration successful, setting isSuccess to true');
-        final newState = state.copyWith(isLoading: false, isSuccess: true);
-        print('New state isSuccess: ${newState.isSuccess}');
+        final newState = state.copyWith(isLoading: false);
         emit(newState);
       } catch (e) {
         print('Registration failed: $e');
         emit(state.copyWith(
           isLoading: false,
           errorMessage: e.toString().replaceAll('Exception: ', ''),
-          isSuccess: false,
         ));
       }
     });

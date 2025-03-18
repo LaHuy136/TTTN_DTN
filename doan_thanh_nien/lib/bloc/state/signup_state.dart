@@ -13,7 +13,6 @@ class SignUpState extends Equatable {
   final String classId;
   final bool isLoading;
   final String? errorMessage;
-  final bool isSuccess;
 
   const SignUpState({
     this.fullName = '',
@@ -28,7 +27,6 @@ class SignUpState extends Equatable {
     this.classId = '',
     this.isLoading = false,
     this.errorMessage,
-    this.isSuccess = false,
   });
 
   SignUpState copyWith({
@@ -44,7 +42,6 @@ class SignUpState extends Equatable {
     String? classId,
     bool? isLoading,
     Object? errorMessage = const Object(),
-    bool? isSuccess,
   }) {
     return SignUpState(
       fullName: fullName ?? this.fullName,
@@ -59,7 +56,6 @@ class SignUpState extends Equatable {
       classId: classId ?? this.classId,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage == const Object() ? this.errorMessage : errorMessage as String?,
-      isSuccess: isSuccess ?? this.isSuccess,
     );
   }
 
@@ -77,6 +73,5 @@ class SignUpState extends Equatable {
         classId,
         isLoading,
         errorMessage,
-        isSuccess,
       ];
 }
