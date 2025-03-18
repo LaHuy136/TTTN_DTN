@@ -64,7 +64,6 @@ class LoginPage extends StatelessWidget {
                       onTap: state.isLoading
                           ? null
                           : () {
-                              // Cập nhật giá trị cuối cùng từ controller trước khi submit
                               context.read<LoginBloc>().add(
                                   StudentIDChanged(studentIDController.text));
                               context.read<LoginBloc>().add(

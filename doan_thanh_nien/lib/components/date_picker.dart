@@ -29,13 +29,9 @@ class DatePicker extends StatelessWidget {
             lastDate: DateTime.now(),
           );
           if (selectedDate != null) {
-            final formattedDate = DateFormat('dd/MM/yyyy').format(selectedDate);
-
+            final formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
             dateOfBirthController.text = formattedDate;
-
-            context.read<SignUpBloc>().add(
-                  DateOfBirthChanged(formattedDate),
-                );
+            context.read<SignUpBloc>().add(DateOfBirthChanged(formattedDate));
           }
         },
         child: Container(
@@ -48,11 +44,8 @@ class DatePicker extends StatelessWidget {
           ),
           child: BlocBuilder<SignUpBloc, SignUpState>(
             builder: (context, state) {
-              final dateOfBirth = (state is SignUpFormUpdated)
-                  ? state.dateOfBirth
-                  : ''; 
               return Text(
-                dateOfBirth.isEmpty ? 'Chọn ngày sinh' : dateOfBirth,
+                state.dateOfBirth.isEmpty ? 'Chọn ngày sinh' : state.dateOfBirth,
                 style: TextStyle(
                   fontFamily: 'Poppins-Medium',
                   fontSize: 16,

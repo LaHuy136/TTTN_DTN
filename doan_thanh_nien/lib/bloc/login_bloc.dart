@@ -6,9 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'event/login_event.dart';
 import 'state/login_state.dart';
 import '../pages/home_page.dart';
+import '../services/auth_service.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final BuildContext context;
+  final AuthService _authService = AuthService();
+
   LoginBloc(this.context) : super(LoginState()) {
     on<StudentIDChanged>((event, emit) {
       emit(state.copyWith(studentID: event.studentID));
@@ -22,18 +25,32 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (state.studentID.isEmpty || state.password.isEmpty) {
         emit(state.copyWith(
           isLoading: false,
-          errorMessage: 'Mã sinh viên và mật khẩu không được để trống!',
+          errorMessage: 'Mã sinh viên và mật khẩu không được để trống!',
         ));
         return;
       }
 
       emit(state.copyWith(isLoading: true, errorMessage: null));
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String storedStudentID = prefs.getString('studentId') ?? '';
-      String storedPassword = prefs.getString('password') ?? '';
       
-      if (state.studentID == storedStudentID &&
-          state.password == storedPassword) {
+      try {
+        print('Attempting login with studentID: ${state.studentID}'); // Debug log
+        
+        final response = await _authService.login(
+          state.studentID,
+          state.password,
+        );
+
+        print('Login successful, saving user data'); // Debug log
+
+        // Lưu thông tin đăng nhập
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', response['accessToken']);
+        await prefs.setString('role', response['role']);
+        await prefs.setString('studentId', response['userResponse'].studentId);
+        await prefs.setString('fullname', response['userResponse'].fullname);
+
+        print('User data saved successfully'); // Debug log
+
         emit(state.copyWith(isLoading: false));
         Navigator.pushReplacement(
           context,
@@ -41,10 +58,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             builder: (context) => const HomePage(selectedCategory: 'All'),
           ),
         );
-      } else {
+      } catch (e) {
+        print('Login error in bloc: $e'); // Debug log
         emit(state.copyWith(
           isLoading: false,
-          errorMessage: 'Mã sinh viên hoặc mật khẩu không chính xác!',
+          errorMessage: e.toString().replaceAll('Exception: ', ''),
         ));
       }
     });

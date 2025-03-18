@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:doan_thanh_nien/components/gender_picker.dart';
 import 'package:doan_thanh_nien/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,8 +99,6 @@ class UpdatePage extends StatelessWidget {
                     const SizedBox(height: 15),
                     const MySubTextfield(text: 'Giới tính'),
                     const SizedBox(height: 10),
-                    GenderPicker(genderController: genderController),
-                    const SizedBox(height: 15),
                     const MySubTextfield(text: 'Ngày sinh'),
                     const SizedBox(height: 10),
                     DatePicker(dateOfBirthController: dateOfBirthController),

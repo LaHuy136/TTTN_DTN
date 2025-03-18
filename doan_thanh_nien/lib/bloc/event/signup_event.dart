@@ -1,70 +1,53 @@
-import 'package:equatable/equatable.dart';
+abstract class SignUpEvent {}
 
-abstract class SignUpEvent extends Equatable {
-  const SignUpEvent();
-  @override
-  List<Object> get props => [];
+class FullNameChanged extends SignUpEvent {
+  final String fullName;
+  FullNameChanged(this.fullName);
 }
 
-class NameChanged extends SignUpEvent {
-  final String name;
-  const NameChanged(this.name);
-  @override
-  List<Object> get props => [name];
-}
-
-class PasswordChanged extends SignUpEvent {
-  final String password;
-  const PasswordChanged(this.password);
-  @override
-  List<Object> get props => [password];
-}
-
-class GenderChanged extends SignUpEvent {
-  final String gender;
-  const GenderChanged(this.gender);
-  @override
-  List<Object> get props => [gender];
-}
-
-class DateOfBirthChanged extends SignUpEvent {
-  final String dateOfBirth;
-  const DateOfBirthChanged(this.dateOfBirth);
-  @override
-  List<Object> get props => [dateOfBirth];
-}
-
-class FacultyChanged extends SignUpEvent {
-  final String faculty;
-  const FacultyChanged(this.faculty);
-  @override
-  List<Object> get props => [faculty];
+class PhoneNumberChanged extends SignUpEvent {
+  final String phoneNumber;
+  PhoneNumberChanged(this.phoneNumber);
 }
 
 class StudentIdChanged extends SignUpEvent {
   final String studentId;
-  const StudentIdChanged(this.studentId);
-  @override
-  List<Object> get props => [studentId];
+  StudentIdChanged(this.studentId);
 }
 
-class SignUpSubmitted extends SignUpEvent {
-  final String name;
-  final String password;
-  final String gender;
-  final String dateOfBirth;
-  final String faculty;
-  final String studentId;
-  
-  const SignUpSubmitted({
-    required this.name,
-    required this.password,
-    required this.gender,
-    required this.dateOfBirth,
-    required this.faculty,
-    required this.studentId,
-  });
-  
-  @override
-  List<Object> get props => [name, password, gender, dateOfBirth, faculty, studentId];
+class AddressChanged extends SignUpEvent {
+  final String address;
+  AddressChanged(this.address);
 }
+
+class DateOfBirthChanged extends SignUpEvent {
+  final String dateOfBirth;
+  DateOfBirthChanged(this.dateOfBirth);
+}
+
+class EmailChanged extends SignUpEvent {
+  final String email;
+  EmailChanged(this.email);
+}
+
+class UsernameChanged extends SignUpEvent {
+  final String username;
+  UsernameChanged(this.username);
+}
+
+class PasswordChanged extends SignUpEvent {
+  final String password;
+  PasswordChanged(this.password);
+}
+
+class RetypePasswordChanged extends SignUpEvent {
+  final String retypePassword;
+  RetypePasswordChanged(this.retypePassword);
+}
+
+class ClassIdChanged extends SignUpEvent {
+  final String classId;
+  ClassIdChanged(this.classId);
+}
+
+class SignUpSubmitted extends SignUpEvent {}

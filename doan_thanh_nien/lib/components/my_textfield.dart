@@ -8,6 +8,7 @@ class MyTextfield extends StatelessWidget {
   final bool obsecureText;
   final Function(dynamic)? onChanged;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const MyTextfield({
     super.key,
@@ -15,15 +16,18 @@ class MyTextfield extends StatelessWidget {
     required this.obsecureText,
     this.onChanged,
     this.controller,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: obsecureText,
+        validator: validator,
+        onChanged: onChanged,
         decoration: InputDecoration(
           filled: true,
           fillColor: AppColor.textFieldColor,

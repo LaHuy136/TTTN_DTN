@@ -1,123 +1,107 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'event/signup_event.dart';
 import 'state/signup_state.dart';
-import '../helpers/save_user_profile.dart';
+import '../services/auth_service.dart';
+import '../models/register_request.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  String name = '';
-  String password = '';
-  String gender = '';
-  String dateOfBirth = '';
-  String faculty = '';
-  String studentId = '';
+  final AuthService _authService = AuthService();
 
-  SignUpBloc() : super(SignUpInitial()) {
-    on<NameChanged>((event, emit) {
-      name = event.name;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
+  SignUpBloc() : super(SignUpState()) {
+    on<FullNameChanged>((event, emit) {
+      emit(state.copyWith(fullName: event.fullName));
     });
 
-    on<PasswordChanged>((event, emit) {
-      password = event.password;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
-    });
-
-    on<GenderChanged>((event, emit) {
-      gender = event.gender;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
-    });
-
-    on<DateOfBirthChanged>((event, emit) {
-      dateOfBirth = event.dateOfBirth;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
-    });
-
-    on<FacultyChanged>((event, emit) {
-      faculty = event.faculty;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
+    on<PhoneNumberChanged>((event, emit) {
+      emit(state.copyWith(phoneNumber: event.phoneNumber));
     });
 
     on<StudentIdChanged>((event, emit) {
-      studentId = event.studentId;
-      emit(SignUpFormUpdated(
-        name: name,
-        password: password,
-        gender: gender,
-        dateOfBirth: dateOfBirth,
-        faculty: faculty,
-        studentId: studentId,
-      ));
+      emit(state.copyWith(studentId: event.studentId));
+    });
+
+    on<AddressChanged>((event, emit) {
+      emit(state.copyWith(address: event.address));
+    });
+
+    on<DateOfBirthChanged>((event, emit) {
+      emit(state.copyWith(dateOfBirth: event.dateOfBirth));
+    });
+
+    on<EmailChanged>((event, emit) {
+      emit(state.copyWith(email: event.email));
+    });
+
+    on<UsernameChanged>((event, emit) {
+      emit(state.copyWith(username: event.username));
+    });
+
+    on<PasswordChanged>((event, emit) {
+      emit(state.copyWith(password: event.password));
+    });
+
+    on<RetypePasswordChanged>((event, emit) {
+      emit(state.copyWith(retypePassword: event.retypePassword));
+    });
+
+    on<ClassIdChanged>((event, emit) {
+      emit(state.copyWith(classId: event.classId));
     });
 
     on<SignUpSubmitted>((event, emit) async {
-      if (event.name.isEmpty ||
-          event.password.isEmpty ||
-          event.gender.isEmpty ||
-          event.dateOfBirth.isEmpty ||
-          event.faculty.isEmpty ||
-          event.studentId.isEmpty) {
-        emit(SignUpFailure());
+      print('Current state before submit:');
+      print('FullName: ${state.fullName}');
+      print('PhoneNumber: ${state.phoneNumber}');
+      print('StudentId: ${state.studentId}');
+      print('Address: ${state.address}');
+      print('DateOfBirth: ${state.dateOfBirth}');
+      print('Email: ${state.email}');
+      print('Username: ${state.username}');
+      print('Password: ${state.password}');
+      print('RetypePassword: ${state.retypePassword}');
+      print('ClassId: ${state.classId}');
+      print('isSuccess: ${state.isSuccess}');
+
+      if (state.password != state.retypePassword) {
+        emit(state.copyWith(
+          isLoading: false,
+          errorMessage: 'Mật khẩu xác nhận không khớp!',
+          isSuccess: false,
+        ));
         return;
       }
 
-      if (event.password.length < 6) {
-        emit(SignUpFailure());
-        return;
-      }
+      emit(state.copyWith(isLoading: true, errorMessage: '', isSuccess: false));
 
-      if (!RegExp(r'^10221\d{4}$').hasMatch(event.studentId)) {
-        emit(SignUpFailure());
-        return;
-      }
-
-      emit(SignUpLoading());
       try {
-        await saveUserProfile(
-          name: event.name,
-          password: event.password,
-          gender: event.gender,
-          dateOfBirth: event.dateOfBirth,
-          faculty: event.faculty,
-          studentId: event.studentId,
+        final request = RegisterRequest(
+          fullname: state.fullName,
+          phoneNumber: state.phoneNumber,
+          studentId: state.studentId,
+          address: state.address,
+          dateOfBirth: state.dateOfBirth,
+          email: state.email,
+          username: state.username,
+          password: state.password,
+          retypePassword: state.retypePassword,
+          classId: state.classId,
+          roleId: 'SV',
         );
-        emit(SignUpSuccess());
-      } catch (_) {
-        emit(SignUpFailure());
+
+        await _authService.register(request);
+        
+        print('Registration successful, setting isSuccess to true');
+        final newState = state.copyWith(isLoading: false, isSuccess: true);
+        print('New state isSuccess: ${newState.isSuccess}');
+        emit(newState);
+      } catch (e) {
+        print('Registration failed: $e');
+        emit(state.copyWith(
+          isLoading: false,
+          errorMessage: e.toString().replaceAll('Exception: ', ''),
+          isSuccess: false,
+        ));
       }
     });
   }
