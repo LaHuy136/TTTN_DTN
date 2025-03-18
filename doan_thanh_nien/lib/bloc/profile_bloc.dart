@@ -13,10 +13,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Future<void> _onLoadProfile(
       LoadProfile event, Emitter<ProfileState> emit) async {
-    String name = prefs.getString('name') ?? '';
+    String name = prefs.getString('fullname') ?? '';
     String gender = prefs.getString('gender') ?? '';
     String dateOfBirth = prefs.getString('dateOfBirth') ?? '';
-    String faculty = prefs.getString('faculty') ?? '';
+    String faculty = prefs.getString('department') ?? '';
     String studentId = prefs.getString('studentId') ?? '';
 
     emit(state.copyWith(

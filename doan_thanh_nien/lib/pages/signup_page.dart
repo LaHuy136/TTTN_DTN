@@ -54,31 +54,11 @@ class _SignUpState extends State<SignUp> {
       child: Scaffold(
         body: BlocListener<SignUpBloc, SignUpState>(
           listener: (context, state) {
-            print('SignUpState listener - isSuccess: ${state.isSuccess}, errorMessage: ${state.errorMessage}'); // Debug log
-            
-            if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
+            if (state.errorMessage != null) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.errorMessage!),
                 backgroundColor: AppColor.bgsnackBarColorFailure,
               ));
-            }
-            
-            // Kiểm tra rõ ràng xem isSuccess có đúng là true không
-            if (state.isSuccess == true) {
-              print('Registration success detected!'); // Debug log
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Đăng ký thành công!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              // Chuyển hướng về trang login sau 2 giây
-              Future.delayed(Duration(seconds: 2), () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              });
             }
           },
           child: SingleChildScrollView(
