@@ -53,8 +53,11 @@ class RegisteredActivitiesPage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ActivityEvidencePage(
-                                title: event.title,
-                                day: event.day,
+                                name: event.name,
+                                date: event.date,
+                                endDate: event.endDate,
+                                score: event.score,
+                                eventType: event.eventType,
                               ),
                             ),
                           ),

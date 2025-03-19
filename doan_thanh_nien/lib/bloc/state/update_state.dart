@@ -2,57 +2,57 @@ import 'package:equatable/equatable.dart';
 
 abstract class UpdateState extends Equatable {
   final String? nameError;
-  final String? genderError;
+  final String? phoneNumberError;
   final String? dateOfBirthError;
-  final String? facultyError;
+  final String? emailError;
   final String? studentIdError;
 
   const UpdateState({
     this.nameError,
-    this.genderError,
+    this.phoneNumberError,
     this.dateOfBirthError,
-    this.facultyError,
+    this.emailError,
     this.studentIdError,
   });
 
   @override
   List<Object?> get props =>
-      [nameError, genderError, dateOfBirthError, facultyError, studentIdError];
+      [nameError, phoneNumberError, dateOfBirthError, emailError, studentIdError];
 }
 
 class UpdateInitial extends UpdateState {}
 
 class UpdateLoaded extends UpdateState {
   final String name;
-  final String gender;
+  final String phoneNumber;
   final String dateOfBirth;
-  final String faculty;
+  final String email;
   final String studentId;
 
   const UpdateLoaded({
     required this.name,
-    required this.gender,
+    required this.phoneNumber,
     required this.dateOfBirth,
-    required this.faculty,
+    required this.email,
     required this.studentId,
     super.nameError,
-    super.genderError,
+    super.phoneNumberError,
     super.dateOfBirthError,
-    super.facultyError,
+    super.emailError,
     super.studentIdError,
   });
 
   @override
   List<Object?> get props => [
         name,
-        gender,
+        phoneNumber,
         dateOfBirth,
-        faculty,
+        email,
         studentId,
         nameError,
-        genderError,
+        phoneNumberError,
         dateOfBirthError,
-        facultyError,
+        emailError,
         studentIdError
       ];
 }
@@ -65,9 +65,9 @@ class UpdateFailure extends UpdateState {
   const UpdateFailure({
     this.errorMessage,
     super.nameError,
-    super.genderError,
+    super.phoneNumberError,
     super.dateOfBirthError,
-    super.facultyError,
+    super.emailError,
     super.studentIdError,
   });
 
@@ -75,9 +75,9 @@ class UpdateFailure extends UpdateState {
   List<Object?> get props => [
         errorMessage ?? '',
         nameError ?? '',
-        genderError ?? '',
+        phoneNumberError ?? '',
         dateOfBirthError ?? '',
-        facultyError ?? '',
+        emailError ?? '',
         studentIdError ?? ''
       ];
 }

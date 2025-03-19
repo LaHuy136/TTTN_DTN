@@ -13,10 +13,10 @@ class DrawerBloc extends Bloc<DrawerEvent, DrawerState> {
   void _onLoadUserData(LoadUserDataEvent event, Emitter<DrawerState> emit) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     emit(state.copyWith(
-      name: prefs.getString('name') ?? '',
-      gender: prefs.getString('gender') ?? '',
+      fullname: prefs.getString('fullname') ?? '',
+      phoneNumber: prefs.getString('phoneNumber') ?? '',
       dateOfBirth: prefs.getString('dateOfBirth') ?? '',
-      faculty: prefs.getString('faculty') ?? '',
+      email: prefs.getString('email') ?? '',
       studentId: prefs.getString('studentId') ?? '',
     ));
   }

@@ -8,33 +8,37 @@ import 'dart:convert';
 class ActivityDetailBloc
     extends Bloc<ActivityDetailEvent, ActivityDetailState> {
   ActivityDetailBloc() : super(ActivityDetailInitial()) {
-
-
     on<LoadActivityDetail>((event, emit) async {
       final prefs = await SharedPreferences.getInstance();
       final registeredEventsJson = prefs.getString('registeredEvents');
       List<volunteerActivities> registeredEvents = [];
-      int numberRegistered = 0;
+      int currentRegistrations = 0;
+      int maxRegistrations = 0;
 
       if (registeredEventsJson != null) {
         registeredEvents = (json.decode(registeredEventsJson) as List)
             .map((e) => volunteerActivities.fromJson(e))
             .toList();
-        numberRegistered = registeredEvents
-            .where((activity) => activity.title == event.title)
+        currentRegistrations = registeredEvents
+            .where((activity) => activity.name == event.name)
             .length;
       }
 
       emit(ActivityDetailLoaded(
-        title: event.title,
+        name: event.name,
         imagePath: event.imagePath,
-        day: event.day,
+        registrationStartDate: event.registrationStartDate,
+        registrationEndDate: event.registrationEndDate,
+        date: event.date,
+        endDate: event.endDate,
         location: event.location,
-        numberRegistered: numberRegistered,
+        currentRegistrations: currentRegistrations,
+        maxRegistrations: maxRegistrations,
+        score: event.score,
+        eventType: event.eventType,
         registeredEvents: registeredEvents,
-        message: registeredEvents.isEmpty
-            ? 'Chưa có sự kiện nào được đăng ký.'
-            : '', 
+        message:
+            registeredEvents.isEmpty ? 'Chưa có sự kiện nào được đăng ký.' : '',
       ));
     });
 
@@ -42,15 +46,21 @@ class ActivityDetailBloc
       final state = this.state;
       if (state is ActivityDetailLoaded) {
         final isAlreadyRegistered =
-            state.registeredEvents.any((e) => e.title == event.activity.title);
+            state.registeredEvents.any((e) => e.name == event.activity.name);
 
         if (isAlreadyRegistered) {
           emit(ActivityDetailLoaded(
-            title: state.title,
+            name: state.name,
             imagePath: state.imagePath,
-            day: state.day,
+            registrationStartDate: state.registrationStartDate,
+            registrationEndDate: state.registrationEndDate,
+            date: state.date,
+            endDate: state.endDate,
             location: state.location,
-            numberRegistered: state.numberRegistered,
+            currentRegistrations: state.currentRegistrations,
+            maxRegistrations: state.maxRegistrations,
+            eventType: state.eventType,
+            score: state.score,
             registeredEvents: state.registeredEvents,
             message: 'Hoạt động đã được đăng ký.',
           ));
@@ -63,15 +73,20 @@ class ActivityDetailBloc
           prefs.setString('registeredEvents',
               json.encode(updatedEvents.map((e) => e.toJson()).toList()));
 
-          final newNumberRegistered = updatedEvents
-              .length; 
+          final newNumberRegistered = updatedEvents.length;
 
           emit(ActivityDetailLoaded(
-            title: state.title,
+            name: state.name,
             imagePath: state.imagePath,
-            day: state.day,
+            registrationStartDate: state.registrationStartDate,
+            registrationEndDate: state.registrationEndDate,
+            date: state.date,
+            endDate: state.endDate,
             location: state.location,
-            numberRegistered: newNumberRegistered,
+            currentRegistrations: newNumberRegistered,
+            maxRegistrations: state.maxRegistrations,
+            eventType: state.eventType,
+            score: state.score,
             registeredEvents: updatedEvents,
             message: 'Đăng ký thành công!',
           ));

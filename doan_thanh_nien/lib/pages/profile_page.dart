@@ -80,9 +80,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder: (context) => UpdatePage(
                             name: state.name,
-                            gender: state.gender,
+                            phoneNumber: state.phoneNumber,
                             dateOfBirth: state.dateOfBirth,
-                            faculty: state.faculty,
+                            email: state.email,
                             studentId: state.studentId,
                           ),
                         ),
@@ -106,9 +106,9 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildLabelText('Họ và tên'),
-          _buildLabelText('Giới tính'),
+          _buildLabelText('Số điện thoại'),
           _buildLabelText('Ngày sinh'),
-          _buildLabelText('Khoa - Lớp'),
+          _buildLabelText('Email'),
           _buildLabelText('Mã sinh viên'),
           _buildLabelText('Chức vụ'),
         ],
@@ -123,9 +123,9 @@ class _ProfilePageState extends State<ProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildValueText(state.name),
-          _buildValueText('Nam'),
+          _buildValueText(state.phoneNumber),
           _buildValueText(state.dateOfBirth),
-          _buildValueText('CNTT21'),
+          _buildValueText(state.email),
           _buildValueText(state.studentId),
           _buildValueText('Sinh viên'),
         ],

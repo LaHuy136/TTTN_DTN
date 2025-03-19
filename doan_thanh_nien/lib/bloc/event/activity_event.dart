@@ -8,22 +8,34 @@ class ActivityDetailEvent extends Equatable {
 }
 
 class LoadActivityDetail extends ActivityDetailEvent {
-  final String title;
+  final String name;
   final String imagePath;
-  final String day;
+  final String registrationStartDate;
+  final String registrationEndDate;
+  final String date;
+  final String endDate;
   final String location;
-  final int? registeredNumber;
+  final int? currentRegistrations;
+  final int? maxRegistrations;
+  final int score;
+  final String eventType;
 
   LoadActivityDetail({
-    required this.title,
+    required this.name,
     required this.imagePath,
-    required this.day,
+    required this.registrationStartDate,
+    required this.registrationEndDate,
+    required this.date,
+    required this.endDate,
     required this.location,
-    this.registeredNumber,
+    required this.eventType,
+    required this.score,
+    this.currentRegistrations,
+    this.maxRegistrations
   });
 
   @override
-  List<Object?> get props => [title, imagePath, day, location, registeredNumber];
+  List<Object?> get props => [name, imagePath, registrationStartDate, registrationEndDate, location, currentRegistrations, maxRegistrations];
 }
 
 class RegisterActivity extends ActivityDetailEvent {

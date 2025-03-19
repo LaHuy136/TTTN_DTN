@@ -36,11 +36,17 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   @override
   Widget build(BuildContext context) {
     context.read<ActivityDetailBloc>().add(LoadActivityDetail(
-          title: widget.activity.title,
+          name: widget.activity.name,
           imagePath: widget.activity.imagePath,
-          day: widget.activity.day,
+          registrationStartDate: widget.activity.registrationStartDate,
+          registrationEndDate: widget.activity.registrationEndDate,
+          maxRegistrations: widget.activity.maxRegistrations,
+          score: widget.activity.score,
+          eventType: widget.activity.eventType,
+          date: widget.activity.date,
+          endDate: widget.activity.endDate,
           location: widget.activity.location,
-          registeredNumber: widget.activity.registeredNumber,
+          currentRegistrations: widget.activity.currentRegistrations,
         ));
 
     return Scaffold(
@@ -74,7 +80,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 10),
-                    MyHeading(text: state.title),
+                    MyHeading(text: state.name),
                     const SizedBox(height: 15),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -85,9 +91,11 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
+
+                    // Current Register
                     Text(
-                      'Số lượng sinh viên đã đăng ký',
+                      'Số lượng sinh viên đăng ký hiện tại',
                       style: TextStyle(
                         color: AppColor.headingColor,
                         fontFamily: 'Poppins-Semibold',
@@ -95,7 +103,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
@@ -103,7 +111,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         shape: BoxShape.circle,
                       ),
                       child: Text(
-                        '${state.numberRegistered}',
+                        '${state.currentRegistrations}',
                         style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -111,7 +119,37 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 25),
+
+                    // Max Register
+                    Text(
+                      'Số lượng sinh viên đăng ký tối đa',
+                      style: TextStyle(
+                        color: AppColor.headingColor,
+                        fontFamily: 'Poppins-Semibold',
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: AppColor.textColor,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '${state.maxRegistrations}',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 10),
+
+                    // Description
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
@@ -122,7 +160,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                             style: TextStyle(
                               color: AppColor.headingColor,
                               fontFamily: 'Poppins-SemiBold',
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -132,7 +170,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                             child: Row(
                               children: [
                                 Text(
-                                  'Thời gian: ',
+                                  'Thời gian đăng ký: ',
                                   style: TextStyle(
                                     color: AppColor.textColor,
                                     fontFamily: 'Poppins-Semibold',
@@ -140,7 +178,14 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                   ),
                                 ),
                                 Text(
-                                  state.day,
+                                  state.registrationStartDate,
+                                  style: TextStyle(
+                                    color: AppColor.textColor,
+                                    fontFamily: 'Poppins-Medium',
+                                  ),
+                                ),
+                                Text(
+                                  state.registrationEndDate,
                                   style: TextStyle(
                                     color: AppColor.textColor,
                                     fontFamily: 'Poppins-Medium',
@@ -180,28 +225,34 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       text: 'Đăng ký',
                       onTap: () {
                         final activity = volunteerActivities(
-                          title: state.title,
+                          name: state.name,
                           imagePath: state.imagePath,
-                          day: state.day,
+                          registrationStartDate: state.registrationStartDate,
+                          registrationEndDate: state.registrationEndDate,
+                          date: state.date,
+                          endDate: state.endDate,
                           location: state.location,
-                          registeredNumber: state.numberRegistered,
+                          currentRegistrations: state.currentRegistrations,
+                          maxRegistrations: state.maxRegistrations,
+                          score: state.score,
+                          eventType: state.eventType,
                           isRegistered: true,
                           category: widget.category ??
                               volunteerActivitiesCategory.another,
                         );
 
-                        if (activity.isExpired()) {
+                        if (activity.daysUntilExpiry() < 0) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: const Text('Hoạt động đã hết hạn.'),
+                            content: Text(
+                                "Sự kiện đã kết thúc ${activity.daysUntilExpiry().abs()} ngày trước."),
                             backgroundColor: AppColor.bgsnackBarColorFailure,
-                            duration: const Duration(seconds: 1),
+                            duration: const Duration(seconds: 2),
                           ));
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content:
-                                const Text('Đăng ký hoạt động thành công'),
+                            content: Text("Đăng ký Sự kiện thành công!"),
                             backgroundColor: AppColor.bgsnackBarColorSuccess,
-                            duration: const Duration(seconds: 1),
+                            duration: const Duration(seconds: 2),
                           ));
                           context.read<ActivityDetailBloc>().add(
                                 RegisterActivity(activity: activity),

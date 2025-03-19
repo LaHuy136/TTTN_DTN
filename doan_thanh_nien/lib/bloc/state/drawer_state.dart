@@ -1,32 +1,32 @@
 
 
 class DrawerState {
-  final String name;
-  final String gender;
+  final String fullname;
+  final String phoneNumber;
   final String dateOfBirth;
-  final String faculty;
+  final String email;
   final String studentId;
 
   DrawerState({
-    this.name = '',
-    this.gender = '',
+    this.fullname = '',
+    this.phoneNumber = '',
     this.dateOfBirth = '',
-    this.faculty = '',
+    this.email = '',
     this.studentId = '',
   });
 
   DrawerState copyWith({
-    String? name,
-    String? gender,
+    String? fullname,
+    String? phoneNumber,
     String? dateOfBirth,
-    String? faculty,
+    String? email,
     String? studentId,
   }) {
     return DrawerState(
-      name: name ?? this.name,
-      gender: gender ?? this.gender,
+      fullname: fullname ?? this.fullname,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-      faculty: faculty ?? this.faculty,
+      email: email ?? this.email,
       studentId: studentId ?? this.studentId,
     );
   }

@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_string_interpolations, prefer_const_constructors
 
 import 'package:doan_thanh_nien/components/my_drawer_tile.dart';
+import 'package:doan_thanh_nien/pages/activity_joined_page.dart';
 import 'package:doan_thanh_nien/pages/activity_registered_page.dart';
 import 'package:doan_thanh_nien/pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class MyDrawer extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            state.name,
+                            state.fullname,
                             style: const TextStyle(
                               fontFamily: 'OpenSans-Bold',
                               fontSize: 18,
@@ -131,15 +132,21 @@ class MyDrawer extends StatelessWidget {
                           (activityBloc.state as LoadActivityDetail);
                       activityBloc.add(
                         LoadActivityDetail(
-                          title: activity.title,
+                          name: activity.name,
                           imagePath: activity.imagePath,
-                          day: activity.day,
+                          date: activity.date,
+                          endDate: activity.endDate,
+                          registrationStartDate: activity.registrationStartDate,
+                          registrationEndDate: activity.registrationEndDate,
+                          maxRegistrations: activity.maxRegistrations,
+                          score: activity.score,
+                          eventType: activity.eventType,
                           location: activity.location,
                         ),
                       );
                     }
 
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const RegisteredActivitiesPage(),
@@ -152,10 +159,20 @@ class MyDrawer extends StatelessWidget {
 
                 const SizedBox(height: 15),
 
-                // const MyDrawerTile(
-                //   text: 'Tin tức / Sự kiện',
-                //   icon: Icons.date_range_outlined,
-                // ),
+                // activities joined list tile
+                MyDropdown(
+                  onSelect: (value) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ActivityJoinedPage(),
+                      ),
+                    );
+                  },
+                  text: 'Hoạt động đã tham gia',
+                  icon: Icons.star_border_outlined,
+                  customPosition: RelativeRect.fromLTRB(0, 500, 0, 0),
+                ),
 
                 const Spacer(),
 

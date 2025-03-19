@@ -1,31 +1,50 @@
 // ignore_for_file: camel_case_types
 import 'package:intl/intl.dart';
+
 class volunteerActivities {
   final String imagePath;
-  final String title;
-  final String day;
+  final String name;
+  final String registrationStartDate;
+  final String registrationEndDate;
+  final String date;
+  final String endDate;
   final String location;
-  final int registeredNumber;
+  final int currentRegistrations;
+  final int maxRegistrations;
+  final int score;
+  final String eventType;
   final bool isRegistered;
   final volunteerActivitiesCategory category;
 
   volunteerActivities({
     required this.imagePath,
-    required this.title,
-    required this.day,
+    required this.name,
+    required this.registrationStartDate,
+    required this.registrationEndDate,
+    required this.date,
+    required this.endDate,
     required this.location,
-    required this.registeredNumber,
+    required this.currentRegistrations,
+    required this.maxRegistrations,
+    required this.eventType,
+    required this.score,
     this.isRegistered = false,
     required this.category,
   });
 
   factory volunteerActivities.fromJson(Map<String, dynamic> json) {
     return volunteerActivities(
+      name: json['name'] ?? '',
       imagePath: json['imagePath'] ?? '',
-      title: json['title'] ?? '',
-      day: json['day'] ?? '',
+      registrationStartDate: json['registrationStartDate'] ?? '',
+      registrationEndDate: json['registrationEndDate'] ?? '',
+      date: json['date'] ?? '',
+      endDate: json['endDate'] ?? '',
       location: json['location'] ?? '',
-      registeredNumber: json['registeredNumber'] ?? 0,
+      currentRegistrations: json['currentRegistrations'] ?? 0,
+      maxRegistrations: json['maxRegistrations'] ?? 0,
+      score: json['score'] ?? 0,
+      eventType: json['eventType'] ?? '',
       isRegistered: json['isRegistered'] ?? false,
       category: volunteerActivitiesCategory.values[json['category']],
     );
@@ -34,10 +53,16 @@ class volunteerActivities {
   Map<String, dynamic> toJson() {
     return {
       'imagePath': imagePath,
-      'title': title,
-      'day': day,
+      'name': name,
+      'registrationStartDate': registrationStartDate,
+      'registrationEndDate': registrationEndDate,
+      'date': date,
+      'endDate': endDate,
       'location': location,
-      'registeredNumber': registeredNumber,
+      'currentRegistrations': currentRegistrations,
+      'maxRegistrations': maxRegistrations,
+      'eventType': eventType,
+      'score': score,
       'isRegistered': isRegistered,
       'category': category.index,
     };
@@ -45,19 +70,32 @@ class volunteerActivities {
 
   volunteerActivities copyWith({
     String? imagePath,
-    String? title,
-    String? day,
+    String? name,
+    String? registrationStartDate,
+    String? registrationEndDate,
+    String? date,
+    String? endDate,
     String? location,
-    int? registeredNumber,
+    int? currentRegistrations,
+    int? maxRegistrations,
+    int? score,
+    String? eventType,
     bool? isRegistered,
     volunteerActivitiesCategory? category,
   }) {
     return volunteerActivities(
       imagePath: imagePath ?? this.imagePath,
-      title: title ?? this.title,
-      day: day ?? this.day,
+      name: name ?? this.name,
+      registrationStartDate:
+          registrationStartDate ?? this.registrationStartDate,
+      registrationEndDate: registrationEndDate ?? this.registrationEndDate,
+      date: date ?? this.date,
+      endDate: endDate ?? this.endDate,
       location: location ?? this.location,
-      registeredNumber: registeredNumber ?? this.registeredNumber,
+      currentRegistrations: currentRegistrations ?? this.currentRegistrations,
+      maxRegistrations: maxRegistrations ?? this.maxRegistrations,
+      score: score ?? this.score,
+      eventType: eventType ?? this.eventType,
       isRegistered: isRegistered ?? this.isRegistered,
       category: category ?? this.category,
     );
@@ -65,14 +103,15 @@ class volunteerActivities {
 
   @override
   String toString() {
-    return 'Title: $title, Day: $day, Location: $location, Category: $category';
+    return 'Name: $name, Date: $registrationStartDate, EndDate: $registrationEndDate, Location: $location, Category: $category';
   }
 
-  bool isExpired() {
+  int daysUntilExpiry() {
     final dateFormat = DateFormat('dd/MM/yyyy');
-    final dates = day.split(' - ');
-    final endDate = dateFormat.parse(dates[1]);
-    return DateTime.now().isAfter(endDate);
+    final endDateParsed = dateFormat.parse(registrationEndDate);
+    final now = DateTime.now();
+
+    return endDateParsed.difference(now).inDays;
   }
 }
 

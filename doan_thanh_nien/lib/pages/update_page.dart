@@ -16,26 +16,26 @@ import '../themes/colors.dart';
 
 class UpdatePage extends StatelessWidget {
   final String? name;
-  final String? gender;
+  final String? phoneNumber;
   final String? dateOfBirth;
-  final String? faculty;
+  final String? email;
   final String? studentId;
 
   const UpdatePage({
     super.key,
     this.name,
-    this.gender,
+    this.phoneNumber,
     this.dateOfBirth,
-    this.faculty,
+    this.email,
     this.studentId,
   });
 
   @override
   Widget build(BuildContext context) {
     final nameController = TextEditingController(text: name ?? '');
-    final genderController = TextEditingController(text: gender ?? '');
+    final phoneNumberController = TextEditingController(text: phoneNumber ?? '');
     final dateOfBirthController = TextEditingController(text: dateOfBirth ?? '');
-    final facultyController = TextEditingController(text: faculty ?? '');
+    final emailController = TextEditingController(text: email ?? '');
     final studentIDController = TextEditingController(text: studentId ?? '');
 
     return BlocProvider(
@@ -97,17 +97,22 @@ class UpdatePage extends StatelessWidget {
                       obsecureText: false,
                     ),
                     const SizedBox(height: 15),
-                    const MySubTextfield(text: 'Giới tính'),
+                    const MySubTextfield(text: 'Số điện thoại'),
+                    MyTextfield(
+                      controller: phoneNumberController,
+                      hintText: '0000000000',
+                      obsecureText: false,
+                    ),
                     const SizedBox(height: 10),
                     const MySubTextfield(text: 'Ngày sinh'),
                     const SizedBox(height: 10),
                     DatePicker(dateOfBirthController: dateOfBirthController),
                     const SizedBox(height: 15),
-                    const MySubTextfield(text: 'Khoa - Lớp'),
+                    const MySubTextfield(text: 'Email'),
                     const SizedBox(height: 10),
                     MyTextfield(
-                      controller: facultyController,
-                      hintText: 'Công nghệ thông tin - K21',
+                      controller: emailController,
+                      hintText: 'example@gmail.com',
                       obsecureText: false,
                     ),
                     const SizedBox(height: 15),
@@ -123,9 +128,9 @@ class UpdatePage extends StatelessWidget {
                       onTap: () {
                         context.read<UpdateBloc>().add(UpdateUserDataEvent(
                           name: nameController.text,
-                          gender: genderController.text,
+                          phoneNumber: phoneNumberController.text,
                           dateOfBirth: dateOfBirthController.text,
-                          faculty: facultyController.text,
+                          email: emailController.text,
                           studentId: studentIDController.text,
                         ));
                       },

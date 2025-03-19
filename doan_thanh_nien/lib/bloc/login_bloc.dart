@@ -1,31 +1,32 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, unused_import
 
+import 'package:doan_thanh_nien/bloc/event/signup_event.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'event/login_event.dart';
+import 'event/login_event.dart' as login; 
 import 'state/login_state.dart';
 import '../pages/home_page.dart';
 import '../services/auth_service.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends Bloc<login.LoginEvent, LoginState> {
   final BuildContext context;
   final AuthService _authService = AuthService();
 
   LoginBloc(this.context) : super(LoginState()) {
-    on<StudentIDChanged>((event, emit) {
-      emit(state.copyWith(studentID: event.studentID));
+    on<login.UserNameChanged>((event, emit) {
+      emit(state.copyWith(username: event.username));
     });
 
-    on<PasswordChanged>((event, emit) {
+    on<login.PasswordChanged>((event, emit) {
       emit(state.copyWith(password: event.password));
     });
 
-    on<LoginSubmitted>((event, emit) async {
-      if (state.studentID.isEmpty || state.password.isEmpty) {
+    on<login.LoginSubmitted>((event, emit) async {
+      if (state.username.isEmpty || state.password.isEmpty) {
         emit(state.copyWith(
           isLoading: false,
-          errorMessage: 'Mã sinh viên và mật khẩu không được để trống!',
+          errorMessage: 'Tên đăng nhập và mật khẩu không được để trống!',
         ));
         return;
       }
@@ -33,10 +34,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(state.copyWith(isLoading: true, errorMessage: null));
       
       try {
-        print('Attempting login with studentID: ${state.studentID}'); // Debug log
+        print('Attempting login with studentID: ${state.username}'); // Debug log
         
         final response = await _authService.login(
-          state.studentID,
+          state.username,
           state.password,
         );
 
@@ -46,9 +47,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', response['accessToken']);
         await prefs.setString('role', response['role']);
-        await prefs.setString('studentId', response['userResponse'].studentId);
+        await prefs.setString('username', response['userResponse'].username);
         await prefs.setString('fullname', response['userResponse'].fullname);
+        await prefs.setString('phoneNumber', response['userResponse'].phoneNumber);
         await prefs.setString('dateOfBirth', response['userResponse'].dateOfBirth);
+        await prefs.setString('email', response['userResponse'].email);
 
         print('User data saved successfully'); // Debug log
 

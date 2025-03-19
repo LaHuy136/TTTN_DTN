@@ -53,14 +53,7 @@ class _SignUpState extends State<SignUp> {
       create: (context) => SignUpBloc(),
       child: Scaffold(
         body: BlocListener<SignUpBloc, SignUpState>(
-          listener: (context, state) {
-            if (state.errorMessage != null) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColor.bgsnackBarColorFailure,
-              ));
-            }
-          },
+          listener: (context, state) {},
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -81,7 +74,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _fullNameController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(FullNameChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(FullNameChanged(value));
                               },
                               hintText: 'Nguyễn Văn A',
                               obsecureText: false,
@@ -98,7 +93,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _phoneNumberController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(PhoneNumberChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(PhoneNumberChanged(value));
                               },
                               hintText: '0123456789',
                               obsecureText: false,
@@ -115,7 +112,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _studentIdController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(StudentIdChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(StudentIdChanged(value));
                               },
                               hintText: '10221xxxx',
                               obsecureText: false,
@@ -132,7 +131,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _addressController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(AddressChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(AddressChanged(value));
                               },
                               hintText: 'Nhập địa chỉ của bạn',
                               obsecureText: false,
@@ -146,15 +147,17 @@ class _SignUpState extends State<SignUp> {
                             const SizedBox(height: 15),
                             const MySubTextfield(text: 'Ngày sinh'),
                             const SizedBox(height: 10),
-                            DatePicker(dateOfBirthController: _dateOfBirthController),
-                  
+                            DatePicker(
+                                dateOfBirthController: _dateOfBirthController),
                             const SizedBox(height: 15),
                             const MySubTextfield(text: 'Email'),
                             const SizedBox(height: 10),
                             MyTextfield(
                               controller: _emailController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(EmailChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(EmailChanged(value));
                               },
                               hintText: 'example@email.com',
                               obsecureText: false,
@@ -174,7 +177,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _usernameController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(UsernameChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(UsernameChanged(value));
                               },
                               hintText: 'username',
                               obsecureText: false,
@@ -191,7 +196,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _passwordController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(PasswordChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(PasswordChanged(value));
                               },
                               hintText: '******',
                               obsecureText: true,
@@ -211,7 +218,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _retypePasswordController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(RetypePasswordChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(RetypePasswordChanged(value));
                               },
                               hintText: '******',
                               obsecureText: true,
@@ -231,7 +240,9 @@ class _SignUpState extends State<SignUp> {
                             MyTextfield(
                               controller: _classIdController,
                               onChanged: (value) {
-                                context.read<SignUpBloc>().add(ClassIdChanged(value));
+                                context
+                                    .read<SignUpBloc>()
+                                    .add(ClassIdChanged(value));
                               },
                               hintText: 'Nhập mã lớp',
                               obsecureText: false,
@@ -246,12 +257,27 @@ class _SignUpState extends State<SignUp> {
                             MyButton(
                               onTap: () {
                                 if (_formKey.currentState!.validate()) {
-                                  // Validate date forma
-
-                                  context.read<SignUpBloc>().add(SignUpSubmitted());
+                                  context
+                                      .read<SignUpBloc>()
+                                      .add(SignUpSubmitted());
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: const Text('Đăng ký thành công'),
+                                    backgroundColor:
+                                        AppColor.bgsnackBarColorSuccess,
+                                    duration: const Duration(seconds: 2),
+                                  ));
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginPage(),
+                                    ),
+                                  );
                                 }
                               },
-                              text: state.isLoading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản',
+                              text: state.isLoading
+                                  ? 'Đang tạo tài khoản...'
+                                  : 'Tạo tài khoản',
                             ),
                           ],
                         );
