@@ -36,7 +36,7 @@ class MyActivityTile extends StatelessWidget {
               const SizedBox(height: 8),
               // title
               Text(
-                activity.title,
+                activity.name,
                 style: TextStyle(
                   color: AppColor.headingColor,
                   fontSize: 20,
@@ -56,7 +56,16 @@ class MyActivityTile extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    activity.day,
+                    activity.date,
+                    style: TextStyle(
+                      letterSpacing: 0.4,
+                      fontSize: 14,
+                      color: AppColor.textColor,
+                      fontFamily: 'Roboto-Regular',
+                    ),
+                  ),
+                   Text(
+                    activity.endDate,
                     style: TextStyle(
                       letterSpacing: 0.4,
                       fontSize: 14,

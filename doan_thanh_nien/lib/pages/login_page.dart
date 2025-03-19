@@ -1,8 +1,10 @@
+// ignore_for_file: unused_import
+
 import 'package:doan_thanh_nien/components/my_textfield.dart';
 import 'package:doan_thanh_nien/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/event/login_event.dart';
+import '../bloc/event/login_event.dart' as login;
 import '../bloc/login_bloc.dart';
 import '../bloc/state/login_state.dart';
 import '../components/my_button.dart';
@@ -14,7 +16,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final studentIDController = TextEditingController();
+    final userNameController = TextEditingController();
     final passwordController = TextEditingController();
 
     return BlocProvider(
@@ -33,13 +35,13 @@ class LoginPage extends StatelessWidget {
                     return Column(
                       children: [
                         MyTextfield(
-                          controller: studentIDController,
-                          hintText: 'Mã sinh viên',
+                          controller: userNameController,
+                          hintText: 'Tên đăng nhập',
                           obsecureText: false,
                           onChanged: (value) {
                             context
                                 .read<LoginBloc>()
-                                .add(StudentIDChanged(value));
+                                .add(login.UserNameChanged(value));
                           },
                         ),
                         const SizedBox(height: 15),
@@ -50,7 +52,7 @@ class LoginPage extends StatelessWidget {
                           onChanged: (value) {
                             context
                                 .read<LoginBloc>()
-                                .add(PasswordChanged(value));
+                                .add(login.PasswordChanged(value));
                           },
                         ),
                       ],
@@ -65,10 +67,10 @@ class LoginPage extends StatelessWidget {
                           ? null
                           : () {
                               context.read<LoginBloc>().add(
-                                  StudentIDChanged(studentIDController.text));
+                                  login.UserNameChanged(userNameController.text));
                               context.read<LoginBloc>().add(
-                                  PasswordChanged(passwordController.text));
-                              context.read<LoginBloc>().add(LoginSubmitted());
+                                  login.PasswordChanged(passwordController.text));
+                              context.read<LoginBloc>().add(login.LoginSubmitted());
                             },
                       text: state.isLoading ? 'Đang xử lý...' : 'Đăng nhập',
                     );

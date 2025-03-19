@@ -14,16 +14,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onLoadProfile(
       LoadProfile event, Emitter<ProfileState> emit) async {
     String name = prefs.getString('fullname') ?? '';
-    String gender = prefs.getString('gender') ?? '';
+    String phoneNumber = prefs.getString('phoneNumber') ?? '';
     String dateOfBirth = prefs.getString('dateOfBirth') ?? '';
-    String faculty = prefs.getString('department') ?? '';
+    String email = prefs.getString('email') ?? '';
     String studentId = prefs.getString('studentId') ?? '';
 
     emit(state.copyWith(
       name: name,
-      gender: gender,
+      phoneNumber: phoneNumber,
       dateOfBirth: dateOfBirth,
-      faculty: faculty,
+      email: email,
       studentId: studentId,
     ));
   }
@@ -36,9 +36,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     emit(state.copyWith(
       name: event.name ?? state.name,
-      gender: event.gender ?? state.gender,
+      phoneNumber: event.phoneNumber ?? state.phoneNumber,
       dateOfBirth: event.dateOfBirth ?? state.dateOfBirth,
-      faculty: event.faculty ?? state.faculty,
+      email: event.email ?? state.email,
       studentId: event.studentId ?? state.studentId,
     ));
   }

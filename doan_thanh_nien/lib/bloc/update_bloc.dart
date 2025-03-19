@@ -7,9 +7,9 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
   UpdateBloc() : super(UpdateInitial()) {
     on<UpdateUserDataEvent>((event, emit) async {
       String? nameError;
-      String? genderError;
+      String? phoneNumberError;
       String? dateOfBirthError;
-      String? facultyError;
+      String? emailError;
       String? studentIdError;
 
       if (event.name!.isEmpty) {
@@ -18,16 +18,16 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
         nameError = "Tên quá dài";
       }
 
-      if (event.gender!.isEmpty) {
-        genderError = "Giới tính không được để trống";
+      if (event.phoneNumber!.isEmpty) {
+        phoneNumberError = "SĐT không được để trống";
       }
 
       if (event.dateOfBirth == null) {
         dateOfBirthError = "Ngày sinh không được để trống";
       }
 
-      if (event.faculty!.isEmpty) {
-        facultyError = "Khoa không được để trống";
+      if (event.email!.isEmpty) {
+        emailError = "Email không được để trống";
       }
 
       if (event.studentId!.isEmpty) {
@@ -37,15 +37,15 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
       }
 
       if (nameError != null ||
-          genderError != null ||
+          phoneNumberError != null ||
           dateOfBirthError != null ||
-          facultyError != null ||
+          emailError != null ||
           studentIdError != null) {
         emit(UpdateFailure(
           nameError: nameError,
-          genderError: genderError,
+          phoneNumberError: phoneNumberError,
           dateOfBirthError: dateOfBirthError,
-          facultyError: facultyError,
+          emailError: emailError,
           studentIdError: studentIdError,
         ));
         return;
@@ -53,17 +53,17 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('name', event.name!);
-        await prefs.setString('gender', event.gender!);
+        await prefs.setString('gender', event.phoneNumber!);
         await prefs.setString('dateOfBirth', event.dateOfBirth!);
-        await prefs.setString('faculty', event.faculty!);
+        await prefs.setString('email', event.email!);
         await prefs.setString('studentId', event.studentId!);
 
         emit(UpdateSuccess());
         emit(UpdateLoaded(
           name: event.name!,
-          gender: event.gender!,
+          phoneNumber: event.phoneNumber!,
           dateOfBirth: event.dateOfBirth!,
-          faculty: event.faculty!,
+          email: event.email!,
           studentId: event.studentId!,
         ));
       } catch (e) {

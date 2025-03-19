@@ -1,24 +1,24 @@
 class LoginState {
-  final String studentID;
+  final String username;
   final String password;
   final bool isLoading;
   final String? errorMessage;
 
   LoginState({
-    this.studentID = '',
+    this.username = '',
     this.password = '',
     this.isLoading = false,
     this.errorMessage,
   });
 
   LoginState copyWith({
-    String? studentID,
+    String? username,
     String? password,
     bool? isLoading,
     String? errorMessage,
   }) {
     return LoginState(
-      studentID: studentID ?? this.studentID,
+      username: username ?? this.username,
       password: password ?? this.password,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage,

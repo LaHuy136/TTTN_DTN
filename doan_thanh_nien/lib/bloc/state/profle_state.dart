@@ -1,40 +1,40 @@
 class ProfileState {
   final String name;
-  final String gender;
+  final String phoneNumber;
   final String dateOfBirth;
-  final String faculty;
+  final String email;
   final String studentId;
 
   ProfileState({
     required this.name,
-    required this.gender,
+    required this.phoneNumber,
     required this.dateOfBirth,
-    required this.faculty,
+    required this.email,
     required this.studentId,
   });
 
   factory ProfileState.initial() {
     return ProfileState(
       name: '',
-      gender: '',
+      phoneNumber: '',
       dateOfBirth: '',
-      faculty: '',
+      email: '',
       studentId: '',
     );
   }
 
   ProfileState copyWith({
     String? name,
-    String? gender,
+    String? phoneNumber,
     String? dateOfBirth,
-    String? faculty,
+    String? email,
     String? studentId,
   }) {
     return ProfileState(
       name: name ?? this.name,
-      gender: gender ?? this.gender,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-      faculty: faculty ?? this.faculty,
+      email: email ?? this.email,
       studentId: studentId ?? this.studentId,
     );
   }

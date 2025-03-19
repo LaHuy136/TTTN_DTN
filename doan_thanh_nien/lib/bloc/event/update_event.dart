@@ -7,21 +7,21 @@ abstract class UpdateEvent extends Equatable {
 
 class UpdateUserDataEvent extends UpdateEvent {
   final String? name;
-  final String? gender;
+  final String? phoneNumber;
   final String? dateOfBirth;
-  final String? faculty;
+  final String? email;
   final String? studentId;
 
   UpdateUserDataEvent({
     this.name,
-    this.gender,
+    this.phoneNumber,
     this.dateOfBirth,
-    this.faculty,
+    this.email,
     this.studentId,
   });
 
   
 
   @override
-  List<Object> get props => [name!, gender!, dateOfBirth!, faculty!, studentId!];
+  List<Object> get props => [name!, phoneNumber!, dateOfBirth!, email!, studentId!];
 }

@@ -14,21 +14,33 @@ class ActivityDetailState extends Equatable {
 class ActivityDetailInitial extends ActivityDetailState {}
 
 class ActivityDetailLoaded extends ActivityDetailState {
-  final String title;
+  final String name;
   final String imagePath;
-  final String day;
+  final String date;
+  final String endDate;
   final String location;
-  final int numberRegistered;
+  final int currentRegistrations;
+  final int maxRegistrations;
+  final String registrationStartDate;
+  final String registrationEndDate;
+  final int score;
+  final String eventType;
   final String message;
   
 
   const ActivityDetailLoaded({
-    required this.title,
+    required this.name,
     required this.imagePath,
-    required this.day,
+    required this.date,
+    required this.endDate,
     required this.location,
     required this.message,
-    required this.numberRegistered,
+    required this.currentRegistrations,
+    required this.maxRegistrations,
+    required this.registrationStartDate,
+    required this.registrationEndDate,
+    required this.score,
+    required this.eventType,
     List<volunteerActivities>? registeredEvents,
   }) : super(registeredEvents: registeredEvents ?? const []);
 }

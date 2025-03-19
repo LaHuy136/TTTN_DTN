@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'event/signup_event.dart';
 import 'state/signup_state.dart';
@@ -50,17 +49,17 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     });
 
     on<SignUpSubmitted>((event, emit) async {
-      print('Current state before submit:');
-      print('FullName: ${state.fullName}');
-      print('PhoneNumber: ${state.phoneNumber}');
-      print('StudentId: ${state.studentId}');
-      print('Address: ${state.address}');
-      print('DateOfBirth: ${state.dateOfBirth}');
-      print('Email: ${state.email}');
-      print('Username: ${state.username}');
-      print('Password: ${state.password}');
-      print('RetypePassword: ${state.retypePassword}');
-      print('ClassId: ${state.classId}');
+      // print('Current state before submit:');
+      // print('FullName: ${state.fullName}');
+      // print('PhoneNumber: ${state.phoneNumber}');
+      // print('StudentId: ${state.studentId}');
+      // print('Address: ${state.address}');
+      // print('DateOfBirth: ${state.dateOfBirth}');
+      // print('Email: ${state.email}');
+      // print('Username: ${state.username}');
+      // print('Password: ${state.password}');
+      // print('RetypePassword: ${state.retypePassword}');
+      // print('ClassId: ${state.classId}');
 
       if (state.password != state.retypePassword) {
         emit(state.copyWith(

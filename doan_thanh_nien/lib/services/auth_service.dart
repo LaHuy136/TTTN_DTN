@@ -46,7 +46,7 @@ class AuthService {
 
   Future<void> register(RegisterRequest request) async {
     try {
-      print('Calling register API with data: ${request.toJson()}'); // Debug log
+      // print('Calling register API with data: ${request.toJson()}'); // Debug log
       
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),

@@ -45,7 +45,7 @@ class ActivitySearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     final filteredActivities = activities.where((activity) {
-      return activity.title.toLowerCase().contains(query.toLowerCase());
+      return activity.name.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     return ListView.builder(
@@ -53,14 +53,14 @@ class ActivitySearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         final activity = filteredActivities[index];
         return ListTile(
-          title: Text(activity.title),
+          title: Text(activity.name),
           titleTextStyle: TextStyle(
             color: AppColor.headingColor,
             fontFamily: 'OpenSans-Bold',
             fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
-          subtitle: Text(activity.day),
+          subtitle: Text(activity.date),
           subtitleTextStyle: TextStyle(
             color: AppColor.textColor,
             fontFamily: 'Poppins-Regular',
@@ -88,7 +88,7 @@ class ActivitySearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     final filteredActivities = activities.where((activity) {
-      return activity.title.toLowerCase().contains(query.toLowerCase());
+      return activity.name.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     return ListView.builder(
@@ -96,14 +96,14 @@ class ActivitySearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         final activity = filteredActivities[index];
         return ListTile(
-          title: Text(activity.title),
+          title: Text(activity.name),
           titleTextStyle: TextStyle(
             color: AppColor.headingColor,
             fontFamily: 'OpenSans-Bold',
             fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
-          subtitle: Text(activity.day),
+          subtitle: Text("${activity.date} ${activity.endDate}"),
           subtitleTextStyle: TextStyle(
             color: AppColor.textColor,
             fontFamily: 'Poppins-Regular',
