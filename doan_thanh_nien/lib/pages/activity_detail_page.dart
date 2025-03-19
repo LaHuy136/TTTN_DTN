@@ -6,6 +6,7 @@ import 'package:doan_thanh_nien/components/my_heading.dart';
 import 'package:doan_thanh_nien/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 import '../bloc/activity_bloc.dart';
 import '../bloc/event/activity_event.dart';
@@ -14,16 +15,15 @@ import '../bloc/home_bloc.dart';
 import '../bloc/state/activity_state.dart';
 import '../components/my_drawer.dart';
 import '../helpers/volunteer_activities.dart';
+import '../models/event.dart';
 import '../themes/colors.dart';
 import 'activity_registered_page.dart';
 
 class ActivityDetailPage extends StatefulWidget {
-  final volunteerActivitiesCategory? category;
   final volunteerActivities activity;
 
   const ActivityDetailPage({
     super.key,
-    this.category,
     required this.activity,
   });
 
@@ -54,7 +54,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(
+            builder: (context) => const HomePage(
               selectedCategory: 'All',
             ),
           ),
@@ -84,11 +84,19 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                     const SizedBox(height: 15),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
+                      child: Image.network(
                         state.imagePath,
                         width: double.infinity,
                         height: 250,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: double.infinity,
+                            height: 250,
+                            color: Colors.grey[300],
+                            child: const Icon(Icons.image_not_supported),
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(height: 15),
@@ -237,8 +245,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                           score: state.score,
                           eventType: state.eventType,
                           isRegistered: true,
-                          category: widget.category ??
-                              volunteerActivitiesCategory.another,
+                          category: widget.activity.category,
                         );
 
                         if (activity.daysUntilExpiry() < 0) {
