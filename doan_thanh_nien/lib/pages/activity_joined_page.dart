@@ -46,9 +46,9 @@ class ActivityJoinedPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (event.eventImages.isNotEmpty)
+          if (event.eventImages!.isNotEmpty)
             Image.network(
-              event.eventImages.first.imageUrl,
+              event.eventImages!.first.imageUrl,
               height: 200,
               width: double.infinity,
               fit: BoxFit.cover,

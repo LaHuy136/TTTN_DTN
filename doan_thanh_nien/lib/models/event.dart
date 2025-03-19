@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 import '../helpers/volunteer_activities.dart';
-
+import 'dart:convert';
 class Event {
   final int id;
   final String name;
@@ -10,7 +10,7 @@ class Event {
   final DateTime registrationStartDate;
   final DateTime registrationEndDate;
   final Semester semester;
-  final int userId;
+  final int? userId;
   final int score;
   final int maxRegistrations;
   final int currentRegistrations;
@@ -18,7 +18,7 @@ class Event {
   final String additionalInfo;
   final String eventType;
   final String? eventCriteria;
-  final List<EventImage> eventImages;
+  final List<EventImage>? eventImages;
 
   Event({
     required this.id,
@@ -42,7 +42,7 @@ class Event {
 
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      id: json['id'],
+      id: json['id'] ?? 0,
       name: json['name'],
       description: json['description'],
       date: DateTime.parse(json['date']),
@@ -56,18 +56,22 @@ class Event {
       currentRegistrations: json['currentRegistrations'],
       location: json['location'],
       additionalInfo: json['additionalInfo'],
-      eventType: json['eventType'],
-      eventCriteria: json['eventCriteria'],
-      eventImages: (json['eventImage'] as List)
-          .map((image) => EventImage.fromJson(image))
-          .toList(),
+      eventType: json['eventType'] != null
+    ? utf8.decode(latin1.encode(json['eventType']))
+    : '',
+      eventCriteria: json['eventCriteria'] ?? '',
+      eventImages: (json['eventImage'] != null) // Kiểm tra null
+        ? (json['eventImage'] as List)
+            .map((image) => EventImage.fromJson(image))
+            .toList()
+        : [],
     );
   }
 
   volunteerActivities toVolunteerActivity() {
     final dateFormat = DateFormat('dd/MM/yyyy');
     return volunteerActivities(
-      imagePath: eventImages.isNotEmpty ? eventImages.first.imageUrl : '',
+      imagePath: (eventImages?.isNotEmpty ?? false) ? eventImages!.first.imageUrl : '',
       name: name,
       registrationStartDate: dateFormat.format(registrationStartDate),
       registrationEndDate: dateFormat.format(registrationEndDate),
