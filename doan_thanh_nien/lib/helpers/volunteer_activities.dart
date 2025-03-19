@@ -15,6 +15,7 @@ class volunteerActivities {
   final String eventType;
   final bool isRegistered;
   final volunteerActivitiesCategory category;
+  final int eventId;
 
   volunteerActivities({
     required this.imagePath,
@@ -30,6 +31,7 @@ class volunteerActivities {
     required this.score,
     this.isRegistered = false,
     required this.category,
+    required this.eventId,
   });
 
   factory volunteerActivities.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,7 @@ class volunteerActivities {
       eventType: json['eventType'] ?? '',
       isRegistered: json['isRegistered'] ?? false,
       category: volunteerActivitiesCategory.values[json['category']],
+      eventId: json['eventId'] ?? 0,
     );
   }
 
@@ -65,6 +68,7 @@ class volunteerActivities {
       'score': score,
       'isRegistered': isRegistered,
       'category': category.index,
+      'eventId': eventId,
     };
   }
 
@@ -82,6 +86,7 @@ class volunteerActivities {
     String? eventType,
     bool? isRegistered,
     volunteerActivitiesCategory? category,
+    int? eventId,
   }) {
     return volunteerActivities(
       imagePath: imagePath ?? this.imagePath,
@@ -98,6 +103,7 @@ class volunteerActivities {
       eventType: eventType ?? this.eventType,
       isRegistered: isRegistered ?? this.isRegistered,
       category: category ?? this.category,
+      eventId: eventId ?? this.eventId,
     );
   }
 

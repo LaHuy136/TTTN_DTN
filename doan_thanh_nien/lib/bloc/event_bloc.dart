@@ -19,5 +19,16 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         emit(EventError(e.toString()));
       }
     });
+    on<LoadRegisteredEvents>((event, emit) async {
+      emit(EventLoading());
+      try {
+        final registeredEvents =
+            await _eventService.getRegisteredEvents(event.token);
+        emit(EventLoaded([], registeredEvents: registeredEvents));
+      } catch (e) {
+        emit(EventError(e.toString()));
+      }
+    });
   }
+  
 } 

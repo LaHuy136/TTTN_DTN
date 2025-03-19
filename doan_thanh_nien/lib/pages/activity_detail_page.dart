@@ -7,7 +7,7 @@ import 'package:doan_thanh_nien/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/activity_bloc.dart';
 import '../bloc/event/activity_event.dart';
 import '../bloc/event/home_event.dart';
@@ -16,6 +16,7 @@ import '../bloc/state/activity_state.dart';
 import '../components/my_drawer.dart';
 import '../helpers/volunteer_activities.dart';
 import '../models/event.dart';
+import '../services/event_service.dart';
 import '../themes/colors.dart';
 import 'activity_registered_page.dart';
 
@@ -33,6 +34,67 @@ class ActivityDetailPage extends StatefulWidget {
 
 class _ActivityDetailPageState extends State<ActivityDetailPage> {
   String selectedCategory = 'All';
+  final EventService _eventService = EventService();
+  SharedPreferences? _prefs;
+  bool _isRegistering = false;
+
+@override
+  void initState() {
+    super.initState();
+    _loadPrefs();
+  }
+
+  Future<void> _loadPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  Future<void> _registerEvent() async {
+    setState(() {
+      _isRegistering = true;
+    });
+
+    try {
+      String? token = _prefs?.getString('token');
+      await _eventService.registerEvent(widget.activity.eventId, token.toString());
+      
+      if (!mounted) return;
+
+      // Tạo bản sao mới của activity với trạng thái đã đăng ký
+      final updatedActivity = widget.activity.copyWith(isRegistered: true);
+      
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text("Đăng ký Sự kiện thành công!"),
+        backgroundColor: AppColor.bgsnackBarColorSuccess,
+        duration: const Duration(seconds: 2),
+      ));
+
+      context.read<ActivityDetailBloc>().add(
+        RegisterActivity(activity: updatedActivity),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RegisteredActivitiesPage(),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+        backgroundColor: AppColor.bgsnackBarColorFailure,
+        duration: const Duration(seconds: 2),
+      ));
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRegistering = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     context.read<ActivityDetailBloc>().add(LoadActivityDetail(
@@ -229,51 +291,26 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       ),
                     ),
                     const SizedBox(height: 25),
-                    MyButton(
-                      text: 'Đăng ký',
-                      onTap: () {
-                        final activity = volunteerActivities(
-                          name: state.name,
-                          imagePath: state.imagePath,
-                          registrationStartDate: state.registrationStartDate,
-                          registrationEndDate: state.registrationEndDate,
-                          date: state.date,
-                          endDate: state.endDate,
-                          location: state.location,
-                          currentRegistrations: state.currentRegistrations,
-                          maxRegistrations: state.maxRegistrations,
-                          score: state.score,
-                          eventType: state.eventType,
-                          isRegistered: true,
-                          category: widget.activity.category,
-                        );
-
-                        if (activity.daysUntilExpiry() < 0) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(
-                                "Sự kiện đã kết thúc ${activity.daysUntilExpiry().abs()} ngày trước."),
-                            backgroundColor: AppColor.bgsnackBarColorFailure,
-                            duration: const Duration(seconds: 2),
-                          ));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text("Đăng ký Sự kiện thành công!"),
-                            backgroundColor: AppColor.bgsnackBarColorSuccess,
-                            duration: const Duration(seconds: 2),
-                          ));
-                          context.read<ActivityDetailBloc>().add(
-                                RegisterActivity(activity: activity),
-                              );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (conext) =>
-                                  const RegisteredActivitiesPage(),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    if (!widget.activity.isRegistered)
+                      MyButton(
+                        text: _isRegistering ? 'Đang đăng ký...' : 'Đăng ký',
+                        onTap: _isRegistering ? null : _registerEvent,
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'Đã đăng ký',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontFamily: 'Poppins-Medium',
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),

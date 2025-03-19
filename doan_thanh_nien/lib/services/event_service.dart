@@ -22,4 +22,40 @@ class EventService {
       throw Exception('Error fetching events: $e');
     }
   }
+
+Future<List<Event>> getRegisteredEvents(String token) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/registrations/user/getevents'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        final List<dynamic> eventsJson = data['events']; 
+        return eventsJson.map((json) => Event.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load registered events: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error fetching registered events: $e');
+    }
+  }
+
+  Future<void> registerEvent(int eventId, String token) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/registrations/$eventId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to register for event');
+    }
+  }
 } 

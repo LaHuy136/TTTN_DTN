@@ -79,6 +79,7 @@ class Event {
       score: score,
       eventType: eventType,
       category: _getCategoryFromEventType(eventType),
+      eventId: id,
     );
   }
 

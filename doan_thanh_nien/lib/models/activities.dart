@@ -1,6 +1,5 @@
 // import 'package:doan_thanh_nien/components/my_icon_button_date.dart';
 import 'package:flutter/material.dart';
-
 import '../helpers/volunteer_activities.dart';
 
 class News extends ChangeNotifier {
@@ -8,6 +7,7 @@ class News extends ChangeNotifier {
   final List<volunteerActivities> _activity = [
     // traditional
     volunteerActivities(
+      eventId: 11,
       imagePath: 'assets/images/mua_he.jpg',
       name: 'Trồng cây xanh',
       date: '30/6/2025 - ',
@@ -24,6 +24,7 @@ class News extends ChangeNotifier {
 
     // research
     volunteerActivities(
+      eventId: 12,
       imagePath: 'assets/images/research.jpg',
       name: 'Dạy các bé học vẽ',
       date: '23/8/2025 - ',
@@ -40,6 +41,7 @@ class News extends ChangeNotifier {
 
     // union
     volunteerActivities(
+      eventId: 13,
       imagePath: 'assets/images/union.jpg',
       name: 'Giúp đỡ các bé hoàn cảnh khó khăn',
       date: '06/08/2025 - ',
@@ -56,6 +58,7 @@ class News extends ChangeNotifier {
 
     // another
     volunteerActivities(
+      eventId: 14,
       imagePath: 'assets/images/hien_mau.jpg',
       name: 'Hiến máu nhân đạo',
       date: '21/09/2025 - ',

@@ -14,11 +14,11 @@ class EventLoading extends EventState {}
 
 class EventLoaded extends EventState {
   final List<Event> events;
-
-  const EventLoaded(this.events);
+  final List<Event>? registeredEvents;
+  const EventLoaded(this.events, {this.registeredEvents = const []});
 
   @override
-  List<Object?> get props => [events];
+  List<Object?> get props => [events, registeredEvents];
 }
 
 class EventError extends EventState {
