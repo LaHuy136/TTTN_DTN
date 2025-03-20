@@ -3,10 +3,8 @@
 import 'package:doan_thanh_nien/components/my_appbar.dart';
 import 'package:doan_thanh_nien/components/my_button.dart';
 import 'package:doan_thanh_nien/components/my_heading.dart';
-import 'package:doan_thanh_nien/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/activity_bloc.dart';
 import '../bloc/event/activity_event.dart';
@@ -15,7 +13,6 @@ import '../bloc/home_bloc.dart';
 import '../bloc/state/activity_state.dart';
 import '../components/my_drawer.dart';
 import '../helpers/volunteer_activities.dart';
-import '../models/event.dart';
 import '../services/event_service.dart';
 import '../themes/colors.dart';
 import 'activity_registered_page.dart';
@@ -38,7 +35,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   SharedPreferences? _prefs;
   bool _isRegistering = false;
 
-@override
+  @override
   void initState() {
     super.initState();
     _loadPrefs();
@@ -55,13 +52,14 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
     try {
       String? token = _prefs?.getString('token');
-      await _eventService.registerEvent(widget.activity.eventId, token.toString());
-      
+      await _eventService.registerEvent(
+          widget.activity.eventId, token.toString());
+
       if (!mounted) return;
 
       // Tạo bản sao mới của activity với trạng thái đã đăng ký
       final updatedActivity = widget.activity.copyWith(isRegistered: true);
-      
+
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: const Text("Đăng ký Sự kiện thành công!"),
         backgroundColor: AppColor.bgsnackBarColorSuccess,
@@ -69,8 +67,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
       ));
 
       context.read<ActivityDetailBloc>().add(
-        RegisterActivity(activity: updatedActivity),
-      );
+            RegisterActivity(activity: updatedActivity),
+          );
 
       Navigator.push(
         context,
@@ -112,18 +110,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         ));
 
     return Scaffold(
-      appBar: MyAppbar(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(
-              selectedCategory: 'All',
-            ),
-          ),
-        ),
-        icon: Icons.arrow_back_ios_new,
-      ),
-      drawer: MyDrawer(
+      appBar: MyAppbar(),
+      endDrawer: MyDrawer(
         onSelectCategory: (category) {
           setState(() {
             selectedCategory = category;
@@ -255,7 +243,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                                   ),
                                 ),
                                 Text(
-                                  state.registrationEndDate,
+                                  " - ${state.registrationEndDate}",
                                   style: TextStyle(
                                     color: AppColor.textColor,
                                     fontFamily: 'Poppins-Medium',
@@ -298,7 +286,8 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
                       )
                     else
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),

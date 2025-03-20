@@ -1,4 +1,5 @@
 import 'package:doan_thanh_nien/bloc/activity_bloc.dart';
+import 'package:doan_thanh_nien/bloc/event_bloc.dart';
 import 'package:doan_thanh_nien/bloc/home_bloc.dart';
 import 'package:doan_thanh_nien/bloc/login_bloc.dart';
 import 'package:doan_thanh_nien/bloc/profile_bloc.dart';
@@ -26,6 +27,7 @@ void main() async {
         BlocProvider(create: (context) => SignUpBloc()),
         BlocProvider(create: (context) => UpdateBloc()),
         BlocProvider(create: (context) => ProfileBloc(prefs: prefs)),
+        BlocProvider(create: (context) => EventBloc()),
       ],
       child: const MyApp(),
     ),

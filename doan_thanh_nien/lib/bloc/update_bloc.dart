@@ -52,8 +52,8 @@ class UpdateBloc extends Bloc<UpdateEvent, UpdateState> {
       }
       try {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('name', event.name!);
-        await prefs.setString('gender', event.phoneNumber!);
+        await prefs.setString('fullname', event.name!);
+        await prefs.setString('phoneNumber', event.phoneNumber!);
         await prefs.setString('dateOfBirth', event.dateOfBirth!);
         await prefs.setString('email', event.email!);
         await prefs.setString('studentId', event.studentId!);

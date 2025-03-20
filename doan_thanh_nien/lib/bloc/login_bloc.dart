@@ -52,6 +52,7 @@ class LoginBloc extends Bloc<login.LoginEvent, LoginState> {
         await prefs.setString('phoneNumber', response['userResponse'].phoneNumber);
         await prefs.setString('dateOfBirth', response['userResponse'].dateOfBirth);
         await prefs.setString('email', response['userResponse'].email);
+        await prefs.setString('studentId', response['userResponse'].studentId);
 
         print('User data saved successfully'); // Debug log
 

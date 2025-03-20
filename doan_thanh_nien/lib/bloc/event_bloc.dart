@@ -24,7 +24,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       try {
         final registeredEvents =
             await _eventService.getRegisteredEvents(event.token);
-        emit(EventLoaded([], registeredEvents: registeredEvents));
+        emit(EventLoaded(const [], registeredEvents: registeredEvents));
       } catch (e) {
         emit(EventError(e.toString()));
       }

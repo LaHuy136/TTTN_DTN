@@ -4,17 +4,15 @@ import 'package:doan_thanh_nien/bloc/state/event_state.dart';
 import 'package:doan_thanh_nien/components/my_appbar.dart';
 import 'package:doan_thanh_nien/components/my_activity_tile.dart';
 import 'package:doan_thanh_nien/components/my_heading.dart';
-import 'package:doan_thanh_nien/services/event_service.dart';
 import 'package:doan_thanh_nien/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'activity_evidence_page.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class RegisteredActivitiesPage extends StatelessWidget {
   const RegisteredActivitiesPage({super.key});
-
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,10 +32,7 @@ class RegisteredActivitiesPage extends StatelessWidget {
 
         if (!snapshot.hasData || snapshot.data == null) {
           return Scaffold(
-            appBar: MyAppbar(
-              onPressed: () => Navigator.pop(context),
-              icon: Icons.arrow_back_ios_new,
-            ),
+            appBar: const MyAppbar(),
             body: Center(
               child: Text(
                 'Vui lòng đăng nhập để xem hoạt động đã đăng ký!',
@@ -49,13 +44,9 @@ class RegisteredActivitiesPage extends StatelessWidget {
 
         final token = snapshot.data!;
         return BlocProvider(
-          create: (context) =>
-              EventBloc()..add(LoadRegisteredEvents(token)),
+          create: (context) => EventBloc()..add(LoadRegisteredEvents(token)),
           child: Scaffold(
-            appBar: MyAppbar(
-              onPressed: () => Navigator.pop(context),
-              icon: Icons.arrow_back_ios_new,
-            ),
+            appBar: const MyAppbar(),
             body: BlocBuilder<EventBloc, EventState>(
               builder: (context, state) {
                 if (state is EventLoading) {
@@ -104,10 +95,10 @@ class RegisteredActivitiesPage extends StatelessWidget {
                                   MaterialPageRoute(
                                     builder: (context) => ActivityEvidencePage(
                                       name: event.name,
-                                      date: DateFormat('dd/MM/yyyy')
-                                          .format(event.date), // Chuyển DateTime thành String
-                                      endDate: DateFormat('dd/MM/yyyy')
-                                          .format(event.endDate), // Chuyển DateTime thành String
+                                      date: DateFormat('dd/MM/yyyy').format(event
+                                          .date), // Chuyển DateTime thành String
+                                      endDate: DateFormat('dd/MM/yyyy').format(event
+                                          .endDate), // Chuyển DateTime thành String
                                       score: event.score,
                                       eventType: event.eventType,
                                     ),
