@@ -2,7 +2,6 @@
 
 import 'package:doan_thanh_nien/components/my_appbar.dart';
 import 'package:doan_thanh_nien/components/my_heading.dart';
-import 'package:doan_thanh_nien/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../themes/colors.dart';
@@ -54,17 +53,7 @@ class _ActivityEvidencePageState extends State<ActivityEvidencePage> {
     final volunteerDays = endDate.difference(startDate).inDays + 1;
 
     return Scaffold(
-      appBar: MyAppbar(
-        icon: Icons.arrow_back_ios_new,
-        onPressed: () => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(
-              selectedCategory: 'All',
-            ),
-          ),
-        ),
-      ),
+      appBar: const MyAppbar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(25.0),

@@ -118,6 +118,7 @@ class MyDrawer extends StatelessWidget {
                   },
                   text: 'Hoạt động tình nguyện',
                   icon: Icons.volunteer_activism_outlined,
+                  isActivity: true,
                 ),
 
                 const SizedBox(height: 15),
@@ -146,7 +147,7 @@ class MyDrawer extends StatelessWidget {
                       );
                     }
 
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const RegisteredActivitiesPage(),
@@ -162,7 +163,7 @@ class MyDrawer extends StatelessWidget {
                 // activities joined list tile
                 MyDropdown(
                   onSelect: (value) {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const ActivityJoinedPage(),

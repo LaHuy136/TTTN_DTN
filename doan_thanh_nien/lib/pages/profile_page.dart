@@ -13,7 +13,6 @@ import '../components/my_button.dart';
 import '../components/my_drawer.dart';
 import '../components/my_heading.dart';
 import '../themes/colors.dart';
-import 'home_page.dart';
 import 'update_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -34,23 +33,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _initializeSharedPreferences() async {
     prefs = await SharedPreferences.getInstance();
-    context
-        .read<ProfileBloc>()
-        .add(LoadProfile()); 
+    context.read<ProfileBloc>().add(LoadProfile());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppbar(
-        onPressed: () => Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(
-              selectedCategory: 'All',
-            ),
-          ),
-        ),
+        onPressed: () => Navigator.pop(context),
         icon: Icons.arrow_back_ios_new,
       ),
       drawer: MyDrawer(onSelectCategory: (category) {}),

@@ -11,7 +11,6 @@ import '../components/my_appbar.dart';
 import '../components/my_drawer.dart';
 import '../components/my_heading.dart';
 import '../helpers/search_delegate.dart';
-import '../models/event.dart';
 
 class HomePage extends StatefulWidget {
   final String selectedCategory;

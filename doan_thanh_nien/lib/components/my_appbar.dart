@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../themes/colors.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
-  final IconData icon;
+  final IconData? icon;
   final Function()? onPressed;
   final Function(String)? onSelected;
-  const MyAppbar({super.key, required this.icon, this.onPressed, this.onSelected});
+  const MyAppbar({super.key, this.icon, this.onPressed, this.onSelected});
 
   @override
   Widget build(BuildContext context) {

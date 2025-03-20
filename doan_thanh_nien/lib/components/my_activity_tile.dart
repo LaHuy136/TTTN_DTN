@@ -26,7 +26,7 @@ class MyActivityTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // title image
+              // name image
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.network(
@@ -62,7 +62,7 @@ class MyActivityTile extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              // title
+              // name
               Text(
                 activity.name,
                 style: TextStyle(
@@ -93,7 +93,7 @@ class MyActivityTile extends StatelessWidget {
                     ),
                   ),
                    Text(
-                    activity.endDate,
+                    " - ${activity.endDate}",
                     style: TextStyle(
                       letterSpacing: 0.4,
                       fontSize: 14,
